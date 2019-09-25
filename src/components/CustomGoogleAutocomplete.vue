@@ -1,7 +1,9 @@
 <template lang="pug">
   .custom-google-place-autocomplete
     input(
+      type="search"
       v-model="input"
+      v-bind="$attrs"
       @blur="onBlur"
       @focus="onFocus"
       @keyup.esc.prevent="escapePressed"
