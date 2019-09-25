@@ -2,11 +2,14 @@
   #app
     pre {{ selectedPlace }}
     custom-google-autocomplete(v-model="query" :options="options" @select="selectedPlace = $event")
-      template(v-slot:results="{results}")
-        div(v-if="results.loading") Loading
+      //- div(slot="results")
+      //- template(slot="beforeInput") before input
+      //- template(slot="afterInput") after input
+      //- template(slot="results" scope="props")
+        div(v-if="props.results.loading") Loading
         div(v-else)
-          div(v-for="prediction in results.entries")
-            div(@click="selectPrediction(prediction)")
+          div(v-for="prediction in props.results.entries")
+            div(@click="props.selectPrediction(prediction)")
               span {{ prediction.description }}
 </template>
 
@@ -26,7 +29,7 @@ export default class App extends Vue {
     apiKey: process.env.VUE_APP_PLACE_API_KEY,
     alwaysOpen: true,
     deepSearch: true,
-    local: true
+    cors: true
   }
 }
 </script>

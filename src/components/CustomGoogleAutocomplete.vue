@@ -1,16 +1,18 @@
 <template lang="pug">
-  .custom-google-place-autocomplete
-    input(
-      type="search"
-      v-model="input"
-      v-bind="$attrs"
-      @blur="onBlur"
-      @focus="onFocus"
-      @keyup.esc.prevent="escapePressed"
-      :class="inputClass"
-    )
-    div(v-if="!canHideDropdown || isDropdownActive")
-      slot(v-bind:results="results" name="results")
+  .custom-google-autocomplete
+    .custom-google-autocomplete-input
+      slot(name="beforeInput")
+      input(
+        type="search"
+        v-model="input"
+        v-bind="$attrs"
+        @blur="onBlur"
+        @focus="onFocus"
+        @keyup.esc.prevent="escapePressed"
+        :class="inputClass")
+      slot(name="afterInput")
+    slot(:results="results" :selectPrediction="selectPrediction" name="results")
+      div(v-if="!canHideDropdown || isDropdownActive")
         div(v-for="prediction in results.entries")
           div(@click="selectPrediction(prediction)") {{ prediction.description }}
 </template>
@@ -64,15 +66,23 @@ export default class CustomGoogleAutocomplete extends Vue {
   @Watch('input')
   updateSearch = debounce(this.triggerSearch, this.debounceTime)
 
-  resetSessionToken(): void {
-    this.sessionToken = uuid()
+  get results(): Results {
+    return {
+      entries: this.predictions,
+      loading: this.fetchingPredictions,
+      hasEntries: !!(this.predictions && this.predictions.length)
+    }
   }
 
-  created(): void {
-    this.input = this.value
+  get canHideDropdown(): boolean {
+    return this.options.dropdown
   }
 
-  async triggerSearch(input: string) {
+  get inputClass(): string {
+    return this.options.inputClass
+  }
+
+  async triggerSearch(input: string): Promise<void> {
     if (!this.inputSelected) { return }
     this.isDropdownActive = true
     try {
@@ -91,11 +101,7 @@ export default class CustomGoogleAutocomplete extends Vue {
     }
   }
 
-  mounted() {
-    this.intervalSessionTokenID = window.setInterval(this.resetSessionToken, 180000)
-  }
-
-  async selectPrediction(prediction: any) {
+  async selectPrediction(prediction: any): Promise<void> {
     this.input = prediction.description
     this.$emit('input', prediction.description)
 
@@ -112,6 +118,10 @@ export default class CustomGoogleAutocomplete extends Vue {
     }
   }
 
+  resetSessionToken(): void {
+    this.sessionToken = uuid()
+  }
+
   onBlur(): void {
     this.inputSelected = false
   }
@@ -120,27 +130,19 @@ export default class CustomGoogleAutocomplete extends Vue {
     this.inputSelected = true
   }
 
-  escapePressed() {
+  escapePressed(): void {
     this.isDropdownActive = false
   }
 
-  get results(): Results {
-    return {
-      entries: this.predictions,
-      loading: this.fetchingPredictions,
-      hasEntries: !!(this.predictions && this.predictions.length)
-    }
+  created(): void {
+    this.input = this.value
   }
 
-  get canHideDropdown(): boolean {
-    return this.options.dropdown
+  mounted(): void {
+    this.intervalSessionTokenID = window.setInterval(this.resetSessionToken, 180000)
   }
 
-  get inputClass() {
-    return this.options.inputClass
-  }
-
-  beforeDestroy() {
+  beforeDestroy(): void {
     window.clearInterval(this.intervalSessionTokenID)
   }
 
