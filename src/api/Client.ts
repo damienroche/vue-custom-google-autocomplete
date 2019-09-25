@@ -4,9 +4,7 @@ const timeout: number = 30000
 
 export default abstract class Client {
   get cors() {
-    return process.env.NODE_ENV !== 'production'
-      ? 'https://cors-anywhere.herokuapp.com/'
-      : ''
+    return 'https://cors-anywhere.herokuapp.com/'
   }
 
   get headers() {
@@ -16,8 +14,8 @@ export default abstract class Client {
     }
   }
 
-  request(method: Method, uri: string, params: any) {
-    const url = `${this.cors}${uri}`
+  request(method: Method, uri: string, params: any, cors: boolean) {
+    const url = cors ? `${this.cors}${uri}` : uri
     return axios({ method, headers: this.headers, timeout, url, params })
   }
 }

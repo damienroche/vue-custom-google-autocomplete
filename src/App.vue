@@ -25,7 +25,8 @@ export default class App extends Vue {
   options = {
     apiKey: process.env.VUE_APP_PLACE_API_KEY,
     alwaysOpen: true,
-    deepSearch: true
+    deepSearch: true,
+    local: true
   }
 }
 </script>

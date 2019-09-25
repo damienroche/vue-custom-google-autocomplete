@@ -5,6 +5,7 @@
       @blur="onBlur"
       @focus="onFocus"
       @keyup.esc.prevent="escapePressed"
+      :class="inputClass"
     )
     div(v-if="!canHideDropdown || isDropdownActive")
       slot(v-bind:results="results" name="results")
@@ -25,6 +26,8 @@ interface Options {
   deepSearch: boolean
   dropdown: boolean
   params: any
+  cors: boolean
+  inputClass: string
 }
 
 interface Results {
@@ -39,7 +42,9 @@ export default class CustomGoogleAutocomplete extends Vue {
     apiKey: '',
     deepSearch: true,
     dropdown: true,
-    params: {}
+    cors: false,
+    params: {},
+    inputClass: ''
   }) }) private options!: Options
   @Prop({ type: String }) private value!: string
 
@@ -76,7 +81,7 @@ export default class CustomGoogleAutocomplete extends Vue {
         input,
         sessiontoken: this.sessionToken,
         ...this.options.params
-      })
+      }, this.options.cors)
       this.predictions = mapData(res.data.predictions, true)
     } finally {
       this.$emit('loading', false)
@@ -98,7 +103,7 @@ export default class CustomGoogleAutocomplete extends Vue {
         placeid: prediction.placeId,
         sessiontoken: this.sessionToken,
         ...this.options.params
-      })
+      }, this.options.cors)
       this.$emit('select', res.data && res.data.result ? mapData(res.data.result, true) : prediction)
     } else {
       this.$emit('select', prediction)
@@ -127,6 +132,10 @@ export default class CustomGoogleAutocomplete extends Vue {
 
   get canHideDropdown(): boolean {
     return this.options.dropdown
+  }
+
+  get inputClass() {
+    return this.options.inputClass
   }
 
   beforeDestroy() {
