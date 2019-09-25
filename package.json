@@ -1,13 +1,27 @@
 {
   "name": "vue-custom-google-autocomplete",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.0-beta.0",
+  "author": "Damien Roche",
+  "description": "Custom your Google Autocomplete search",
+  "main": "./dist/vue-custom-google-autocomplete.common.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/damienroche/vue-custom-google-autocomplete.git"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build-bundle": "vue-cli-service build --target lib --name vue-custom-google-autocomplete ./src/components/index.js",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
+  "bugs": {
+    "url": "https://github.com/damienroche/vue-custom-google-autocomplete/issues"
+  },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@types/lodash": "^4.14.139",
     "@types/uuid": "^3.4.5",

@@ -7,9 +7,9 @@
       @keyup.esc.prevent="escapePressed"
     )
     div(v-if="!canHideDropdown || isDropdownActive")
-      slot(v-bind:results="results")
-        div(v-for="prediction in predictions")
-          div(@click="selectPrediction(prediction)") {{ prediction.description }}
+      slot(v-bind:results="results" name="results")
+        div(v-for="prediction in results.entries")
+          div(@click="selectPrediction(prediction)") pp {{ prediction.description }}
 </template>
 
 <script lang="ts">
@@ -34,7 +34,7 @@ interface Results {
 }
 
 @Component
-export default class CustomGooglePlaceAutocomplete extends Vue {
+export default class CustomGoogleAutocomplete extends Vue {
   @Prop({ type: Object, default: (): Options => ({
     apiKey: '',
     deepSearch: true,
