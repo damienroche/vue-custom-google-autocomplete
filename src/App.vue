@@ -1,29 +1,32 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-  </div>
+<template lang="pug">
+  #app
+    pre {{ selectedPlace }}
+    custom-google-place-autocomplete(v-model="query" :options="options" @select="selectedPlace = $event")
+      template(v-slot:default="results")
+        div(v-for="prediction in results.entries")
+          div(@click="selectPrediction(prediction)") {{ prediction.description }}
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
+import { Component, Vue } from 'vue-property-decorator'
+import CustomGooglePlaceAutocomplete from '@/components/CustomGooglePlaceAutocomplete.vue'
 
 @Component({
   components: {
-    HelloWorld,
-  },
+    CustomGooglePlaceAutocomplete
+  }
 })
-export default class App extends Vue {}
-</script>
+export default class App extends Vue {
+  selectedPlace: any = null
+  query = 'Valence'
+  options = {
+    apiKey: process.env.VUE_APP_PLACE_API_KEY,
+    alwaysOpen: true,
+    deepSearch: true
+  }
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  mounted() {
+    console.log(process.env.VUE_APP_PLACE_API_KEY)
+  }
 }
-</style>
+</script>
