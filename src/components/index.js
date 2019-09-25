@@ -1,9 +1,9 @@
 import Vue from 'vue'
-import CutomGoogleAutocomplete from './CutomGoogleAutocomplete.vue'
+import CustomGoogleAutocomplete from './CustomGoogleAutocomplete.vue'
 
 const plugin = {
   install(Vue, options) {
-    Vue.component('cutom-google-autocomplete', CutomGoogleAutocomplete)
+    Vue.component('custom-google-autocomplete', CustomGoogleAutocomplete)
   }
 }
 
