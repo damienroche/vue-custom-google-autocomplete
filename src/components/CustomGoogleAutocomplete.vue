@@ -10,7 +10,7 @@
     div(v-if="!canHideDropdown || isDropdownActive")
       slot(v-bind:results="results" name="results")
         div(v-for="prediction in results.entries")
-          div(@click="selectPrediction(prediction)") pp {{ prediction.description }}
+          div(@click="selectPrediction(prediction)") {{ prediction.description }}
 </template>
 
 <script lang="ts">
