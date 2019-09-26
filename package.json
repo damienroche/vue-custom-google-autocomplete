@@ -4,6 +4,14 @@
   "author": "Damien Roche",
   "description": "Custom your Google Autocomplete search",
   "main": "./dist/vue-custom-google-autocomplete.common.js",
+  "keywords": [
+    "vue2",
+    "autocomplete",
+    "google",
+    "custom",
+    "place",
+    "location"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
