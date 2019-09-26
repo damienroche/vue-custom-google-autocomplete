@@ -6,7 +6,7 @@
 
 ## Installation
 
-You need [Vue.js](https://vuejs.org/) **version 2.0+** and an [Google PLACE API](https://developers.google.com/places/web-service/get-api-key) key. This plugin comes without any css, the main goal is to use it with differents framework (the example above uses Bulma). To do this, you can pass multiples class in options and custom the results template (See examples section).
+You need [Vue.js](https://vuejs.org/) **version 2.0+** and an [Google PLACE API](https://developers.google.com/places/web-service/get-api-key) key. This plugin comes without any css, the main goal is to use it with differents framework (the example above uses Bulma). To do this, you can pass multiple classes in options and custom the results template (See examples section).
 
 ### 1 Install via npm
 
