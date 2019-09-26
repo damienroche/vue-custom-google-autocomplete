@@ -60,6 +60,7 @@ options = {
 | `inputWrapperClass`  | String  | ''                           | Input Wrapper class.                                                   |
 | `mainWrapperClass`   | String  | ''                           | Input Wrapper class                                                    |
 | `focus`              | Boolean | false                        | Focus input                                                            |
+| `debounceTime`       | Number  | 400                          | Time in ms before trigger a new Google api call                        |
 
 Params object is useful to refine predictions, for example if you want to get first predictions near to a location within a radius distance in a certain language you can set params like this :
 ```javascript

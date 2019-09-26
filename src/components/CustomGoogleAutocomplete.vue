@@ -40,9 +40,10 @@ interface Options {
   deepSearch: boolean
   params: any
   cors: boolean
-  inputClass: string,
-  inputWrapperClass: string,
-  mainWrapperClass: string,
+  debounceTime: number
+  inputClass: string
+  inputWrapperClass: string
+  mainWrapperClass: string
   focus: boolean
 }
 
@@ -52,6 +53,7 @@ export default class CustomGoogleAutocomplete extends Vue {
     apiKey: '',
     deepSearch: true,
     cors: false,
+    debounceTime: 400,
     params: {},
     inputClass: '',
     inputWrapperClass: '',
@@ -62,7 +64,6 @@ export default class CustomGoogleAutocomplete extends Vue {
 
   private api = new Api()
   private input: string = ''
-  private debounceTime: number = 400
   private fetchingPredictions = false
   private predictions: any[] = []
   private isInputFromUser: boolean = false
@@ -95,6 +96,22 @@ export default class CustomGoogleAutocomplete extends Vue {
     return this.options.mainWrapperClass
   }
 
+  get debounceTime(): number {
+    return this.options.debounceTime || 400
+  }
+
+  get apiKey(): string {
+    return this.options.apiKey || ''
+  }
+
+  get params(): any {
+    return this.options.params || {}
+  }
+
+  get cors(): boolean {
+    return this.options.cors || false
+  }
+
   async triggerSearch(input: string): Promise<void> {
     if (!this.isInputFromUser) { return }
     try {
@@ -102,11 +119,11 @@ export default class CustomGoogleAutocomplete extends Vue {
       this.firstFetch = true
       this.fetchingPredictions = true
       const res = await this.api.fetchPredictions({
-        key: this.options.apiKey,
+        key: this.apiKey,
         input,
         sessiontoken: this.sessionToken,
-        ...this.options.params
-      }, this.options.cors)
+        ...this.params
+      }, this.cors)
       this.predictions = mapData(res.data.predictions, true)
     } finally {
       this.$emit('loading', false)
@@ -120,11 +137,11 @@ export default class CustomGoogleAutocomplete extends Vue {
 
     if (this.options.deepSearch) {
       const res = await this.api.fetchPlace({
-        key: this.options.apiKey,
+        key: this.apiKey,
         placeid: prediction.placeId,
         sessiontoken: this.sessionToken,
-        ...this.options.params
-      }, this.options.cors)
+        ...this.params
+      }, this.cors)
       this.$emit('select', res.data && res.data.result ? mapData(res.data.result, true) : prediction)
     } else {
       this.$emit('select', prediction)
