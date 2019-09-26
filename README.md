@@ -68,4 +68,4 @@ params = {
   language: 'fr'
 }
 ```
-(https://developers.google.com/places/web-service/autocomplete) See Optional parameters section for more informations
+See [Optional parameters](https://developers.google.com/places/web-service/autocomplete) section for more informations
