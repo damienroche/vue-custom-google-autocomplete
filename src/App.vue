@@ -18,7 +18,7 @@
             @click.stop="props.selectPrediction(prediction)")
             span {{ prediction.description }}
     custom-google-autocomplete.dropdown(
-      v-model="query"
+      :value="query"
       :options="bulmaDropdownOptions"
       :class="{'is-active': dropdownActive }"
       @select="selectedPlace = $event"

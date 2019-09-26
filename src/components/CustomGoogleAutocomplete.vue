@@ -115,7 +115,6 @@ export default class CustomGoogleAutocomplete extends Vue {
   }
 
   async selectPrediction(prediction: any): Promise<void> {
-    console.log(prediction)
     this.input = prediction.description
     this.$emit('input', prediction.description)
 
