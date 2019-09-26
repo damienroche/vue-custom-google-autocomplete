@@ -33,6 +33,7 @@ Vue.use(CustomGoogleAutocomplete)
 | `options`     | Object  | see options section                             | Plugin options (see options section)                   |
 | `value`       | String  | null                                            | Input value (can be use with v-model)                  |
 
+You can also pass all props available on an input (placeholder, name..)
 
 ## Options
 
