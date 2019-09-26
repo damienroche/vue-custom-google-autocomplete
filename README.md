@@ -80,7 +80,7 @@ The results part emits two events @loading and @select
 @loading is triggered when Google API is requested.
 @select is triggered when a prediction is selected it send an object with datas about the location
 
-## Template
+## Template and slot
 
 In order to be more flexbile, you are able to make your own results template with `slot-scope`
 This template is accessible via the `results` slot
@@ -94,6 +94,8 @@ props = {
   selectPrediction: Function
 }
 ```
+
+Also two slots are available before and after the input `beforeInput` `afterInput`
 
 ## Examples
 
