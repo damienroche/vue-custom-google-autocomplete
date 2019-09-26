@@ -1,20 +1,30 @@
 <template lang="pug">
-  .custom-google-autocomplete
-    .custom-google-autocomplete-input
+  .custom-google-autocomplete(:class="mainWrapperClass")
+    .custom-google-autocomplete-input(:class="inputWrapperClass")
       slot(name="beforeInput")
       input(
         type="search"
+        ref="autocomplete"
         v-model="input"
         v-bind="$attrs"
         @blur="onBlur"
         @focus="onFocus"
-        @keyup.esc.prevent="escapePressed"
+        @keyup.esc.prevent="$emit('key:escape', $refs.autocomplete)"
+        @keydown.tab.prevent="$emit('key:tab', $refs.autocomplete)"
+        @keydown.enter.prevent="$emit('key:enter', $refs.autocomplete)"
+        @keydown.up.prevent="$emit('key:up', $refs.autocomplete)"
+        @keydown.down.prevent="$emit('key:down', $refs.autocomplete)"
         :class="inputClass")
       slot(name="afterInput")
-    slot(:results="results" :selectPrediction="selectPrediction" name="results")
-      div(v-if="!canHideDropdown || isDropdownActive")
-        div(v-for="prediction in results.entries")
-          div(@click="selectPrediction(prediction)") {{ prediction.description }}
+    slot(
+      name="results"
+      :query="input"
+      :results="entries"
+      :loading="loading"
+      :firstFetch="firstFetch"
+      :selectPrediction="selectPrediction")
+      div(v-for="prediction in entries")
+        div(@click="selectPrediction(prediction)") {{ prediction.description }}
 </template>
 
 <script lang="ts">
@@ -28,16 +38,12 @@ import mapData from '@/helpers'
 interface Options {
   apiKey: string
   deepSearch: boolean
-  dropdown: boolean
   params: any
   cors: boolean
-  inputClass: string
-}
-
-interface Results {
-  entries: any
-  loading: boolean
-  hasEntries: boolean
+  inputClass: string,
+  inputWrapperClass: string,
+  mainWrapperClass: string,
+  focus: boolean
 }
 
 @Component
@@ -45,19 +51,22 @@ export default class CustomGoogleAutocomplete extends Vue {
   @Prop({ type: Object, default: (): Options => ({
     apiKey: '',
     deepSearch: true,
-    dropdown: true,
     cors: false,
     params: {},
-    inputClass: ''
+    inputClass: '',
+    inputWrapperClass: '',
+    mainWrapperClass: '',
+    focus: false
   }) }) private options!: Options
   @Prop({ type: String }) private value!: string
 
   private api = new Api()
   private input: string = ''
-  private inputSelected: boolean = false
   private debounceTime: number = 400
   private fetchingPredictions = false
   private predictions: any[] = []
+  private isInputFromUser: boolean = false
+  private firstFetch: boolean = false
   private sessionToken: string = uuid()
   private isDropdownActive: boolean = false
   private intervalSessionTokenID: number = -1
@@ -66,27 +75,31 @@ export default class CustomGoogleAutocomplete extends Vue {
   @Watch('input')
   updateSearch = debounce(this.triggerSearch, this.debounceTime)
 
-  get results(): Results {
-    return {
-      entries: this.predictions,
-      loading: this.fetchingPredictions,
-      hasEntries: !!(this.predictions && this.predictions.length)
-    }
+  get entries(): any {
+    return this.predictions
   }
 
-  get canHideDropdown(): boolean {
-    return this.options.dropdown
+  get loading(): boolean {
+    return this.fetchingPredictions
   }
 
   get inputClass(): string {
     return this.options.inputClass
   }
 
+  get inputWrapperClass(): string {
+    return this.options.inputWrapperClass
+  }
+
+  get mainWrapperClass(): string {
+    return this.options.mainWrapperClass
+  }
+
   async triggerSearch(input: string): Promise<void> {
-    if (!this.inputSelected) { return }
-    this.isDropdownActive = true
+    if (!this.isInputFromUser) { return }
     try {
       this.$emit('loading', true)
+      this.firstFetch = true
       this.fetchingPredictions = true
       const res = await this.api.fetchPredictions({
         key: this.options.apiKey,
@@ -102,6 +115,7 @@ export default class CustomGoogleAutocomplete extends Vue {
   }
 
   async selectPrediction(prediction: any): Promise<void> {
+    console.log(prediction)
     this.input = prediction.description
     this.$emit('input', prediction.description)
 
@@ -122,16 +136,16 @@ export default class CustomGoogleAutocomplete extends Vue {
     this.sessionToken = uuid()
   }
 
-  onBlur(): void {
-    this.inputSelected = false
+  onFocus() {
+    this.isInputFromUser = true
+    this.$emit('focus', this.$refs.autocomplete)
   }
 
-  onFocus(): void {
-    this.inputSelected = true
-  }
-
-  escapePressed(): void {
-    this.isDropdownActive = false
+  async onBlur() {
+    await this.$nextTick()
+    setTimeout(() => {
+      this.$emit('blur', this.$refs.autocomplete)
+    }, 500)
   }
 
   created(): void {
@@ -140,11 +154,13 @@ export default class CustomGoogleAutocomplete extends Vue {
 
   mounted(): void {
     this.intervalSessionTokenID = window.setInterval(this.resetSessionToken, 180000)
+    if (this.options.focus) {
+      (this.$refs.autocomplete as HTMLElement).focus()
+    }
   }
 
   beforeDestroy(): void {
     window.clearInterval(this.intervalSessionTokenID)
   }
-
 }
 </script>

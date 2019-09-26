@@ -1,6 +1,6 @@
 {
   "name": "vue-custom-google-autocomplete",
-  "version": "0.1.0-beta.4",
+  "version": "0.1.0-beta.5",
   "author": "Damien Roche",
   "description": "Custom your Google Autocomplete search",
   "main": "./dist/vue-custom-google-autocomplete.common.js",
@@ -43,6 +43,8 @@
     "@vue/cli-service": "^3.11.0",
     "@vue/test-utils": "1.0.0-beta.29",
     "babel-core": "7.0.0-bridge.0",
+    "bootstrap": "^4.3.1",
+    "bulma": "^0.7.5",
     "node-sass": "^4.9.0",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
