@@ -165,4 +165,8 @@ export default {
 </script>
 ```
 
+The following example show how you can adapt this plugin with the Bootstrap dropdown markup.
+
+<img src="./img/example-bootstrap.png" alt="Custom Google Autcomplete Example with Bootstrap Dropdown">
+
 

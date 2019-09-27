@@ -74,7 +74,7 @@ export default class CustomGoogleAutocomplete extends Vue {
 
   // tslint:disable-next-line
   @Watch('input')
-  updateSearch = debounce(this.triggerSearch, this.debounceTime)
+  updateSearch = debounce(this.triggerSearch, this.debounceTime, { leading: !this.firstFetch })
 
   get entries(): any {
     return this.predictions
