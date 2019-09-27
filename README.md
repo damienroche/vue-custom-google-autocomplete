@@ -169,4 +169,74 @@ The following example show how you can adapt this plugin with the Bootstrap drop
 
 <img src="./img/example-bootstrap.png" alt="Custom Google Autcomplete Example with Bootstrap Dropdown">
 
+```vue
+<template>
+  <custom-google-autocomplete
+    class="dropdown"
+    :value="query"
+    placeholder="Please, enter an address"
+    :options="options"
+    :class="{'show': dropdownActive }"
+    @select="selectedPlace = $event"
+    @focus="dropdownActive = true"
+    @blur="dropdownActive = false"
+  >
+    <template slot="results" slot-scope="props">
+      <div class="dropdown-menu" :class="{'show': dropdownActive && props.query }">
+        <div class="dropdown-item-text" v-if="hasNoResults(props)">
+          <span style="font-size: 12px; color: #919191">
+            No results found for <strong>"{{props.query}}"</strong>
+          </span>
+        </div>
+        <div class="dropdown-item-text" v-if="hasResults(props)">
+          <span style="font-size: 12px; color: #919191">
+            {{ props.results.length }} results found for <strong>"{{props.query}}"</strong>
+          </span>
+        </div>
+        <div class="dropdown-item-text" v-if="props.loading">
+          <span style="font-size: 12px; color: #919191">
+            Loading...
+          </span>
+        </div>
+        <div class="dropdown-divider" v-if="props.query && !hasNoResults(props) && !props.loading"></div>
+        <a href="!#" class="dropdown-item"
+          v-if="props.results.length && !props.loading"
+          v-for="(prediction, index) in props.results"
+          :key="index"
+          style="font-size: 13px;"
+          @click.prevent="props.selectPrediction(prediction)"
+        >
+          <span> {{ prediction.description }} </span>
+        </a>
+      </div>
+    </template>
+  </custom-google-autocomplete>
+</template>
+
+<script>
+
+export default {
+  data() {
+    return {
+      selectedPlace: null,
+      dropdownActive: false,
+      query: '',
+      options: {
+        apiKey: process.env.VUE_APP_PLACE_API_KEY,
+        deepSearch: true,
+        cors: true,
+        focus: false,
+        inputClass: 'input',
+        inputWrapperClass: 'dropdown-trigger',
+        params: {
+          location: '43.3,5.4',
+          radius: 1000,
+          language: 'fr'
+        }
+      }
+    }
+  }
+}
+</script>
+```
 

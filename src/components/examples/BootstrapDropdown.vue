@@ -18,7 +18,7 @@
             span(style="font-size: 12px; color: #919191")
               span {{ props.results.length }} results found for&nbsp;
               strong "{{props.query}}"
-          .dropdown-item(v-if="props.loading")
+          .dropdown-item-text(v-if="props.loading")
             span(style="font-size: 12px; color: #919191")
               strong Loading...
           .dropdown-divider(v-if="props.query && !hasNoResults(props) && !props.loading")
