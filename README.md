@@ -223,19 +223,27 @@ export default {
       selectedPlace: null,
       dropdownActive: false,
       query: '',
-      options: {
+      options: any = {
         apiKey: process.env.VUE_APP_PLACE_API_KEY,
         deepSearch: true,
         cors: true,
         focus: false,
-        inputClass: 'input',
-        inputWrapperClass: 'dropdown-trigger',
+        inputClass: 'form-control',
+        inputWrapperClass: '',
         params: {
-          location: '43.3,5.4',
+          location: '45.52345,-122.67621',
           radius: 1000,
-          language: 'fr'
+          language: 'en'
         }
       }
+    }
+  },
+  methods: {
+    hasNoResults(props) {
+      return !props.results.length && !props.loading && props.firstFetch && props.query
+    },
+    hasResults(props) {
+      return props.results.length > 0 && !props.loading && props.firstFetch && props.query
     }
   }
 }
