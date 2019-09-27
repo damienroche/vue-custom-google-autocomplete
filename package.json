@@ -1,6 +1,6 @@
 {
   "name": "vue-custom-google-autocomplete",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Damien Roche",
   "description": "Custom your Google Autocomplete search",
   "main": "./dist/vue-custom-google-autocomplete.common.js",

@@ -101,7 +101,8 @@ Also two slots are available before and after the input `beforeInput` `afterInpu
 
 ## Examples
 
-The following example show how you can adapt this plugin with the Bulma dropdown markup.
+
+### Bulma dropdown markup.
 
 <img src="./img/example-bulma-dropdown.gif" alt="Custom Google Autcomplete Example with Bulma Dropdown">
 
@@ -165,7 +166,8 @@ export default {
 </script>
 ```
 
-The following example show how you can adapt this plugin with the Bootstrap dropdown markup.
+
+### Bootstrap dropdown markup.
 
 <img src="./img/example-bootstrap.png" alt="Custom Google Autcomplete Example with Bootstrap Dropdown">
 
