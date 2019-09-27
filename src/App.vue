@@ -1,43 +1,34 @@
 <template lang="pug">
   #app(style="padding: 30px;")
-    //- custom-google-autocomplete.panel(
-      v-model="query"
-      :options="bulmaPanelOptions"
+    custom-google-autocomplete.dropdown.show(
+      :value="query"
+      :options="options"
+      placeholder="Please, enter an address"
+      :class="{'show': dropdownActive }"
       @select="selectedPlace = $event"
       @focus="dropdownActive = true"
       @blur="dropdownActive = false")
       template(slot="results" slot-scope="props")
-          //- .panel-block(style="font-size: 12px;") Please enter an address
-          //- div(v-if="props.firstFetch")
-          .panel-block(v-if="props.loading")
-            span Loading
-          .panel-block(
+        .dropdown-menu(:class="{'show': dropdownActive && props.query }" style="top: calc(100% + 5px)")
+          .dropdown-item-text(v-if="hasNoResults(props)")
+            span(style="font-size: 12px; color: #919191")
+              span No results found for&nbsp;
+              strong "{{props.query}}"
+          .dropdown-item-text(v-if="hasResults(props)")
+            span(style="font-size: 12px; color: #919191")
+              span {{ props.results.length }} results found for&nbsp;
+              strong "{{props.query}}"
+          .dropdown-item(v-if="props.loading")
+            span(style="font-size: 12px; color: #919191")
+              strong Loading...
+          .dropdown-divider(v-if="props.query && !hasNoResults(props) && !props.loading")
+          .dropdown-item(
             v-if="props.results.length && !props.loading"
             v-for="(prediction, index) in props.results"
             :key="index"
+            style="font-size: 13px;"
             @click.stop="props.selectPrediction(prediction)")
             span {{ prediction.description }}
-    custom-google-autocomplete.dropdown(
-      :value="query"
-      :options="bulmaDropdownOptions"
-      :class="{'is-active': dropdownActive }"
-      @select="selectedPlace = $event"
-      @focus="dropdownActive = true"
-      @blur="dropdownActive = false"
-      style="display: flex;")
-      template(slot="results" slot-scope="props")
-        .dropdown-menu
-          .dropdown-content
-            .dropdown-item(style="font-size: 12px;") Please enter an address
-            hr.dropdown-divider(v-if="props.firstFetch")
-            .dropdown-item(v-if="props.loading")
-              span Loading
-            a.dropdown-item(
-              v-if="props.results.length && !props.loading"
-              v-for="(prediction, index) in props.results"
-              :key="index"
-              @click.stop="props.selectPrediction(prediction)")
-              span {{ prediction.description }}
 </template>
 
 <script lang="ts">
@@ -54,32 +45,26 @@ export default class App extends Vue {
   dropdownActive = false
 
   query: string = ''
-  bulmaDropdownOptions: any = {
+  options: any = {
     apiKey: process.env.VUE_APP_PLACE_API_KEY,
     deepSearch: true,
     cors: true,
     focus: false,
-    inputClass: 'input',
+    inputClass: 'form-control',
     inputWrapperClass: 'dropdown-trigger',
     params: {
-      location: '43.3,5.4',
+      location: '45.52345,-122.67621',
       radius: 1000,
-      language: 'fr'
+      language: 'en'
     }
   }
 
-  bulmaPanelOptions: any = {
-    apiKey: process.env.VUE_APP_PLACE_API_KEY,
-    deepSearch: true,
-    cors: true,
-    focus: false,
-    inputClass: 'input',
-    inputWrapperClass: 'panel-block',
-    params: {
-      location: '45.75,4.85',
-      radius: 1000,
-      language: 'fr'
-    }
+  hasNoResults(props) {
+    return !props.results.length && !props.loading && props.firstFetch && props.query
+  }
+
+  hasResults(props) {
+    return props.results.length > 0 && !props.loading && props.firstFetch && props.query
   }
 }
 </script>
