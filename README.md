@@ -1,12 +1,12 @@
 # vue-custom-google-autocomplete
 
 <p align="center">
-  <img src="./img/example.gif" alt="Custom Google Autcomplete Example with Bulma Dropdown">
+  <img src="./img/vue-custom-google-autocomplete.png" alt="Custom Google Autcomplete using Place API">
 </p>
 
 ## Installation
 
-You need [Vue.js](https://vuejs.org/) **version 2.0+** and an [Google PLACE API](https://developers.google.com/places/web-service/get-api-key) key. This plugin comes without any css, the main goal is to use it with differents framework (the example above uses Bulma). To do this, you can pass multiple classes in options and custom the results template (See examples section).
+You need [Vue.js](https://vuejs.org/) **version 2.0+** and an [Google PLACE API](https://developers.google.com/places/web-service/get-api-key) key. This plugin comes without any css, the main goal is to use it with differents framework. To do this, you can pass multiple classes in options and custom the results template (See examples section).
 
 ### 1 Install via npm
 
@@ -102,6 +102,8 @@ Also two slots are available before and after the input `beforeInput` `afterInpu
 ## Examples
 
 The following example show how you can adapt this plugin with the Bulma dropdown markup.
+
+<img src="./img/example-bulma-dropdown.gif" alt="Custom Google Autcomplete Example with Bulma Dropdown">
 
 ```vue
 <template>
