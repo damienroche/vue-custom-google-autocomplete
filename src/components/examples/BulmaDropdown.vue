@@ -35,7 +35,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import CustomGoogleAutocomplete from '@/components/CustomGoogleAutocomplete.vue'
-import 'bulma'
+// import 'bulma'
 
 @Component({
   components: {
