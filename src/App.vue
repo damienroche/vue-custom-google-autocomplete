@@ -7,8 +7,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-// import BootstrapDropdown from '@/components/examples/BootstrapDropdown.vue'
-// import BulmaDropdown from '@/components/examples/BulmaDropdown.vue'
 
 import BootstrapDropdown from '@/components/boostrap/BootstrapDropdown.vue'
 import BulmaDropdown from '@/components/bulma/BulmaDropdown.vue'
@@ -23,8 +21,6 @@ export default class App extends Vue {
   selected: any = null
   options: any = {
     apiKey: process.env.VUE_APP_PLACE_API_KEY,
-    deepSearch: true,
-    focus: true,
     cors: true,
     params: {
       location: '45.52345,-122.67621',

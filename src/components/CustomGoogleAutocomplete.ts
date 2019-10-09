@@ -65,6 +65,10 @@ export default class CustomGoogleAutocomplete extends Vue {
     return this.options.cors || false
   }
 
+  get deepSearch(): boolean {
+    return this.options.deepSearch || false
+  }
+
   get hasResults(): boolean {
     return this.entries ? this.entries.length : false
   }
@@ -91,7 +95,7 @@ export default class CustomGoogleAutocomplete extends Vue {
     this.isInputFromUser = false
     this.search = prediction.description
 
-    if (this.options.deepSearch) {
+    if (this.deepSearch) {
       const res = await this.api.fetchPlace({
         key: this.apiKey,
         placeid: prediction.placeId,

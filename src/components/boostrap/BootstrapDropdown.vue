@@ -1,7 +1,7 @@
 <template lang="pug">
   custom-google-autocomplete(:options="options" @select="$emit('select', $event)")
     div(slot-scope="{ inputAttrs, inputEvents, loading, results, query, selectPrediction, hasResults }" style="position: relative;")
-      input.form-control(type="search" v-bind="inputAttrs" v-on="inputEvents" ref="autocomplete" @blur="onBlur" @focus="dropdownActive = true")
+      input.form-control(type="search" v-bind="[inputAttrs, $attrs]" v-on="inputEvents" ref="autocomplete" @blur="onBlur" @focus="dropdownActive = true")
       .dropdown-menu(:class="{'show': dropdownActive && query && query.length > 2 }")
         .dropdown-item-text(v-if="loading")
           slot(name="loading")

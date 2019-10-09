@@ -4,7 +4,7 @@
       :class="{'is-active': dropdownActive && query && query.length > 2 }"
       slot-scope="{ inputAttrs, inputEvents, loading, results, query, selectPrediction, hasResults }"
       style="position: relative;")
-      input.input.dropdown-trigger(type="search" v-bind="inputAttrs" v-on="inputEvents" ref="autocomplete" @blur="onBlur" @focus="dropdownActive = true")
+      input.input.dropdown-trigger(type="search" v-bind="[inputAttrs, $attrs]" v-on="inputEvents" ref="autocomplete" @blur="onBlur" @focus="dropdownActive = true")
       .dropdown-menu(v-if="dropdownActive")
         .dropdown-content
           .dropdown-item(v-if="loading")
@@ -54,7 +54,7 @@ export default class BulmaDropdown extends Vue {
   }
 
   get focus() {
-    return this.options.focus
+    return this.options.focus || false
   }
 
   mounted() {
