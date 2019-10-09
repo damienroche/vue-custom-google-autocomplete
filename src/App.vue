@@ -2,13 +2,13 @@
   #app(style="padding: 30px;")
     //- bootstrap-dropdown(:options="options" @select="selected = $event")
     bulma-dropdown(:options="options" @select="selected = $event")
-    //- pre {{ selected }}
+    //-   pre {{ selected }}
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-import BootstrapDropdown from '@/components/boostrap/BootstrapDropdown.vue'
+import BootstrapDropdown from '@/components/bootstrap/BootstrapDropdown.vue'
 import BulmaDropdown from '@/components/bulma/BulmaDropdown.vue'
 
 @Component({

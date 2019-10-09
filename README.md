@@ -6,16 +6,21 @@
 
 ## Installation
 
-You need [Vue.js](https://vuejs.org/) **version 2.0+** and an [Google PLACE API](https://developers.google.com/places/web-service/get-api-key) key. This plugin comes without any css, the main goal is to use it with differents framework. To do this, you can pass multiple classes in options and custom the results template (See examples section).
+You need [Vue.js](https://vuejs.org/) **version 2.0+** and an [Google PLACE API](https://developers.google.com/places/web-service/get-api-key) key. This plugin is a renderless component. It comes without any css as the main goal is to use it with differents frameworks. 
 
-### 1 Install via npm
+If you looking for framework oriented components, you can import them separately (see ***pre-configured*** section)
+PR are welcome for other components
+
+### Install via npm
 
 ```bash
 npm install vue-custom-google-autocomplete
 yarn add vue-custom-google-autocomplete
 ```
 
-### 2 Import and use
+### Import and use
+
+Note: if you want a specific preconfigured component, skit this step and import it as a simple component (see ***pre-configured*** section)
 
 ```javascript
 import Vue from 'vue'
@@ -25,6 +30,18 @@ import CustomGoogleAutocomplete from 'vue-custom-google-autocomplete'
 
 Vue.use(CustomGoogleAutocomplete)
 ```
+
+```vue
+<template>
+  <custom-google-autocomplete :options="options" @select="$emit('select', $event)")
+    <div slot-scope="{ inputAttrs, inputEvents, loading, results, query, selectPrediction, hasResults }">
+    	...
+    </div>
+  </custom-google-autocomplete>
+</template>
+```
+
+
 
 ## Props
 
@@ -43,9 +60,6 @@ options = {
   deepSearch: true,
   cors: false,
   params: {},
-  inputClass: '',
-  inputWrapperClass: '',
-  mainWrapperClass: '',
   focus: false
 }
 ```
@@ -56,13 +70,11 @@ options = {
 | `deepSearch`         | Boolean | true                         | Get more informations about selected place (geometry etc..)            |
 | `cors`               | Boolean | false                        | Set to true when project is running locally                            |
 | `params`             | Object  | {}                           | Google Autocomplete optional parameters                                |
-| `inputClass`.        | String  | ''                           | Input class to match with                                              |
-| `inputWrapperClass`  | String  | ''                           | Input Wrapper class.                                                   |
-| `mainWrapperClass`   | String  | ''                           | Input Wrapper class                                                    |
 | `focus`              | Boolean | false                        | Focus input                                                            |
 | `debounceTime`       | Number  | 400                          | Time in ms before trigger a new Google api call                        |
 
 Params object is useful to refine predictions, for example if you want to get first predictions near to a location within a radius distance in a certain language you can set params like this :
+
 ```javascript
 params = {
   location: `${lat},${lng}`,
@@ -74,32 +86,25 @@ See [Optional parameters](https://developers.google.com/places/web-service/autoc
 
 ## Events
 
-The input part emits three events @blur @focus and @key:value
-All three send the Input Element reference
-@key values are :escape :tab :enter :up :down
+@select event is triggered when a prediction is selected. It send an object with datas about the location
 
-The results part emits two events @loading and @select
-@loading is triggered when Google API is requested.
-@select is triggered when a prediction is selected it send an object with datas about the location
+## Template and slot-scope
 
-## Template and slot
-
-In order to be more flexbile, you are able to make your own results template with `slot-scope`
-This template is accessible via the `results` slot
+In order to be more flexbile, you are able to make your own results template with `slot-scope`.
 
 ```javascript
 props = {
-  firstFetch: Boolean,
+  inputAttrs: Object,
+  inputEvents: Object,
   query: String,
   results: Array,
   loading: Boolean,
-  selectPrediction: Function
+  selectPrediction: Function,
+  hasResults: Boolean
 }
 ```
 
-Also two slots are available before and after the input `beforeInput` `afterInput`
-
-## Examples
+## Pre-configured Components
 
 
 ### Bulma dropdown markup.
@@ -108,52 +113,24 @@ Also two slots are available before and after the input `beforeInput` `afterInpu
 
 ```vue
 <template>
-  <custom-google-autocomplete
-    class="dropdown"
-    :value="query"
-    :options="options"
-    :class="{'is-active': dropdownActive }"
-    @select="selectedPlace = $event"
-    @focus="dropdownActive = true"
-    @blur="dropdownActive = false"
-  >
-    <template slot="results" slot-scope="props">
-      <div class="dropdown-menu">
-        <div class="dropdown-content">
-          <div class="dropdown-item" style="font-size: 12px;"> Please enter an address </div>
-          <hr class="dropdown-divider" v-if="props.firstFetch" />
-          <div class="dropdown-item" v-if="props.loading">
-            <span> Loading </span>
-          </div>
-          <a href="!#" class="dropdown-item"
-            v-if="props.results.length && !props.loading"
-            v-for="(prediction, index) in props.results"
-            :key="index"
-            @click.prevent="props.selectPrediction(prediction)"
-          >
-            <span> {{ prediction.description }} </span>
-          </a>
-        </div>
-      </div>
-    </template>
-  </custom-google-autocomplete>
+  <bulma-dropdown(:options="options" @select="selected = $event") placeholder="Search"/>
 </template>
 
 <script>
+import { BulmaDropdown } from 'vue-custom-google-autocomplete'
 
 export default {
+  components: {
+    BulmaDropdown
+  },
   data() {
     return {
-      selectedPlace: null,
-      dropdownActive: false,
-      query: '',
+      selected: null,
       options: {
         apiKey: process.env.VUE_APP_PLACE_API_KEY,
         deepSearch: true,
         cors: true,
         focus: false,
-        inputClass: 'input',
-        inputWrapperClass: 'dropdown-trigger',
         params: {
           location: '43.3,5.4',
           radius: 1000,
@@ -166,70 +143,33 @@ export default {
 </script>
 ```
 
+To customize loading text and no results text, two slots are availables : `loading` and `empty`.
+Input is binded with `$attrs`
 
-### Bootstrap dropdown markup.
+
+### Bootstrap dropdown.
 
 <img src="./img/example-bootstrap.png" alt="Custom Google Autcomplete Example with Bootstrap Dropdown">
 
 ```vue
 <template>
-  <custom-google-autocomplete
-    class="dropdown"
-    :value="query"
-    placeholder="Please, enter an address"
-    :options="options"
-    :class="{'show': dropdownActive }"
-    @select="selectedPlace = $event"
-    @focus="dropdownActive = true"
-    @blur="dropdownActive = false"
-  >
-    <template slot="results" slot-scope="props">
-      <div class="dropdown-menu" :class="{'show': dropdownActive && props.query }">
-        <div class="dropdown-item-text" v-if="hasNoResults(props)">
-          <span style="font-size: 12px; color: #919191">
-            No results found for <strong>"{{props.query}}"</strong>
-          </span>
-        </div>
-        <div class="dropdown-item-text" v-if="hasResults(props)">
-          <span style="font-size: 12px; color: #919191">
-            {{ props.results.length }} results found for <strong>"{{props.query}}"</strong>
-          </span>
-        </div>
-        <div class="dropdown-item-text" v-if="props.loading">
-          <span style="font-size: 12px; color: #919191">
-            Loading...
-          </span>
-        </div>
-        <div class="dropdown-divider" v-if="props.query && !hasNoResults(props) && !props.loading"></div>
-        <a href="!#" class="dropdown-item"
-          v-if="props.results.length && !props.loading"
-          v-for="(prediction, index) in props.results"
-          :key="index"
-          style="font-size: 13px;"
-          @click.prevent="props.selectPrediction(prediction)"
-        >
-          <span> {{ prediction.description }} </span>
-        </a>
-      </div>
-    </template>
-  </custom-google-autocomplete>
+  <bootstrap-dropdown(:options="options" @select="selected = $event") name="input-name"/>
 </template>
 
 <script>
-
+import { BootstrapDropdown } from 'vue-custom-google-autocomplete'
 export default {
+  components: {
+    BootstrapDropdown
+  },
   data() {
     return {
-      selectedPlace: null,
-      dropdownActive: false,
-      query: '',
+      selected: null,
       options: any = {
         apiKey: process.env.VUE_APP_PLACE_API_KEY,
         deepSearch: true,
         cors: true,
         focus: false,
-        inputClass: 'form-control',
-        inputWrapperClass: '',
         params: {
           location: '45.52345,-122.67621',
           radius: 1000,
@@ -237,16 +177,10 @@ export default {
         }
       }
     }
-  },
-  methods: {
-    hasNoResults(props) {
-      return !props.results.length && !props.loading && props.firstFetch && props.query
-    },
-    hasResults(props) {
-      return props.results.length > 0 && !props.loading && props.firstFetch && props.query
-    }
   }
 }
 </script>
 ```
 
+To customize loading text and no results text, two slots are availables : `loading` and `empty`.
+Input is binded with `$attrs`

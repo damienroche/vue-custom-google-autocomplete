@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import CustomGoogleAutocomplete from './CustomGoogleAutocomplete.vue'
+import CustomGoogleAutocomplete from './CustomGoogleAutocomplete'
 import BootstrapDropdown from './bootstrap/BootstrapDropdown.vue'
 import BulmaDropdown from './bulma/BulmaDropdown.vue'
 
