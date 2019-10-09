@@ -6,7 +6,7 @@
 
 ## Installation
 
-You need [Vue.js](https://vuejs.org/) **version 2.0+** and an [Google PLACE API](https://developers.google.com/places/web-service/get-api-key) key. This plugin is a renderless component. It comes without any css as the main goal is to use it with differents frameworks. 
+You need [Vue.js](https://vuejs.org/) **version 2.0+** and an [Google PLACE API](https://developers.google.com/places/web-service/get-api-key) key. This plugin is a renderless component. It comes without any css as the main goal is to use it with differents frameworks.
 
 If you looking for framework oriented components, you can import them separately (see ***pre-configured*** section)
 PR are welcome for other components
@@ -48,7 +48,6 @@ Vue.use(CustomGoogleAutocomplete)
 | Name          | Type    | Default                                         | Description                                            |
 |---------------|---------|-------------------------------------------------|--------------------------------------------------------|
 | `options`     | Object  | see options section                             | Plugin options (see options section)                   |
-| `value`       | String  | null                                            | Input value (can be use with v-model)                  |
 
 You can also pass all props available on an input (placeholder, name..)
 
