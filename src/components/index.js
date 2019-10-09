@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import CustomGoogleAutocomplete from './CustomGoogleAutocomplete.vue'
+import BootstrapDropdown from './bootstrap/BootstrapDropdown.vue'
+import BulmaDropdown from './bulma/BulmaDropdown.vue'
 
 const plugin = {
   install(Vue, options) {
@@ -8,3 +10,7 @@ const plugin = {
 }
 
 export default plugin
+export {
+  BootstrapDropdown,
+  BulmaDropdown
+}

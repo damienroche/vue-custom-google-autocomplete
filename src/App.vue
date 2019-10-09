@@ -1,17 +1,17 @@
 <template lang="pug">
   #app(style="padding: 30px;")
-    component(:is="activeExample" :key="activeExampleKey")
+    //- bootstrap-dropdown(:options="options" @select="selected = $event")
+    bulma-dropdown(:options="options" @select="selected = $event")
+    //- pre {{ selected }}
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import BootstrapDropdown from '@/components/examples/BootstrapDropdown.vue'
-import BulmaDropdown from '@/components/examples/BulmaDropdown.vue'
+// import BootstrapDropdown from '@/components/examples/BootstrapDropdown.vue'
+// import BulmaDropdown from '@/components/examples/BulmaDropdown.vue'
 
-interface Example {
-  key: string,
-  component: any
-}
+import BootstrapDropdown from '@/components/boostrap/BootstrapDropdown.vue'
+import BulmaDropdown from '@/components/bulma/BulmaDropdown.vue'
 
 @Component({
   components: {
@@ -20,21 +20,17 @@ interface Example {
   }
 })
 export default class App extends Vue {
-  activeExampleKey: string = 'bulma'
-  examples: Example[] = [
-    {
-      key: 'bulma',
-      component: BulmaDropdown
-    },
-    {
-      key: 'bootstrap',
-      component: BootstrapDropdown
+  selected: any = null
+  options: any = {
+    apiKey: process.env.VUE_APP_PLACE_API_KEY,
+    deepSearch: true,
+    focus: true,
+    cors: true,
+    params: {
+      location: '45.52345,-122.67621',
+      radius: 1000,
+      language: 'en'
     }
-  ]
-
-  get activeExample() {
-    const example = this.examples.find((ex) => ex.key === this.activeExampleKey)
-    return example ? example.component : this.examples[0].component
   }
 }
 </script>

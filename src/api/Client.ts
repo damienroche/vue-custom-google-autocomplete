@@ -3,7 +3,7 @@ import axios, { Method } from 'axios'
 const timeout: number = 30000
 
 export default abstract class Client {
-  get cors() {
+  get cors(): string {
     return 'https://cors-anywhere.herokuapp.com/'
   }
 
