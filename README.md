@@ -79,7 +79,7 @@ options = {
 | Name                 | Type    | Default                      | Description                                                            |
 |----------------------|---------|------------------------------|------------------------------------------------------------------------|
 | `apiKey`             | String  | null                         | Your Google PLACE Api key (REQUIRED)                                   |
-| `deepSearch`         | Boolean | true                         | Get more informations about selected place (geometry etc..)            |
+| `deepSearch`         | Boolean | false                        | Get more informations about selected place (geometry etc..)            |
 | `cors`               | Boolean | false                        | Set to true when project is running locally                            |
 | `params`             | Object  | {}                           | Google Autocomplete optional parameters                                |
 | `focus`              | Boolean | false                        | Focus input                                                            |
