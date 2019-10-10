@@ -1,7 +1,7 @@
 <template lang="pug">
   #app(style="padding: 30px;")
-    //- bootstrap-dropdown(:options="options" @select="selected = $event")
-    bulma-dropdown(:options="options" @select="selected = $event")
+    bootstrap-dropdown(:options="options" @select="selected = $event" placeholder="Search a place")
+    //- bulma-dropdown(:options="options" @select="selected = $event")
     //-   pre {{ selected }}
 </template>
 

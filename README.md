@@ -33,12 +33,25 @@ Vue.use(CustomGoogleAutocomplete)
 
 ```vue
 <template>
-  <custom-google-autocomplete :options="options" @select="$emit('select', $event)")
+  <custom-google-autocomplete :options="options" @select="selected = $event)")
     <div slot-scope="{ inputAttrs, inputEvents, loading, results, query, selectPrediction, hasResults }">
-    	...
+    	<input type="search" v-bind="inputAttrs" v-on="inputEvents" />
+      <div v-for="(prediction, index) in results" :key="'prediction-' + index" @click="selectPrediction(prediction)">
+        {{ prediction.description }}
+      </div>
     </div>
   </custom-google-autocomplete>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      selected: null
+    }
+  }
+}
+</script>
 ```
 
 
