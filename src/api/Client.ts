@@ -12,7 +12,7 @@ export default abstract class Client {
   }
 
   request(method: Method, uri: string, params: any, cors: boolean, corsBaseUrl: string) {
-    const url = cors ? `${corsBaseUrl}${uri}` : uri
+    const url = cors ? `${corsBaseUrl}` + encodeURIComponent(uri) : uri
     return axios({ method, headers: this.headers, timeout, url, params })
   }
 }
