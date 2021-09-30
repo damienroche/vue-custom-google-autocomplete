@@ -71,6 +71,7 @@ options = {
   apiKey: YOUR_API_KEY,
   deepSearch: true,
   cors: false,
+  corsBaseUrl: 'https://cors-anywhere.herokuapp.com',
   params: {},
   focus: false
 }
@@ -81,6 +82,7 @@ options = {
 | `apiKey`             | String  | null                         | Your Google PLACE Api key (REQUIRED)                                   |
 | `deepSearch`         | Boolean | false                        | Get more informations about selected place (geometry etc..)            |
 | `cors`               | Boolean | false                        | Set to true when project is running locally                            |
+| `corsBaseUrl`        | String  | https://cors-anywhere.herokuapp.com | Uses a test proxy server. For production use, supply your own |
 | `params`             | Object  | {}                           | Google Autocomplete optional parameters                                |
 | `focus`              | Boolean | false                        | Focus input                                                            |
 | `debounceTime`       | Number  | 400                          | Time in ms before trigger a new Google api call                        |

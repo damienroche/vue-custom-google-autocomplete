@@ -13,6 +13,7 @@ export default class CustomGoogleAutocomplete extends Vue {
     apiKey: '',
     deepSearch: true,
     cors: false,
+    corsBaseUrl: 'https://cors-anywhere.herokuapp.com',
     debounceTime: 400,
     params: {},
     focus: false
@@ -65,6 +66,10 @@ export default class CustomGoogleAutocomplete extends Vue {
     return this.options.cors || false
   }
 
+  get corsBaseUrl(): string {
+    return this.options.corsBaseUrl || 'https://cors-anywhere.herokuapp.com';
+  }
+
   get deepSearch(): boolean {
     return this.options.deepSearch || false
   }
@@ -83,7 +88,7 @@ export default class CustomGoogleAutocomplete extends Vue {
         input,
         sessiontoken: this.sessionToken,
         ...this.params
-      }, this.cors)
+      }, this.cors, this.corsBaseUrl)
       this.predictions = mapData(res.data.predictions, true)
     } finally {
       this.firstFetch = true
@@ -101,7 +106,7 @@ export default class CustomGoogleAutocomplete extends Vue {
         placeid: prediction.placeId,
         sessiontoken: this.sessionToken,
         ...this.params
-      }, this.cors)
+      }, this.cors, this.corsBaseUrl)
       this.$emit('select', res.data && res.data.result ? mapData(res.data.result, true) : prediction)
     } else {
       this.$emit('select', prediction)
