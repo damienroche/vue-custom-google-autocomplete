@@ -21,7 +21,6 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build-bundle": "vue-cli-service build --target lib --name vue-custom-google-autocomplete ./src/components/index.js",
-    "prepare": "vue-cli-service build --target lib --name vue-custom-google-autocomplete ./src/components/index.js",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
