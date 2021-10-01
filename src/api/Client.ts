@@ -3,9 +3,6 @@ import axios, { Method } from 'axios'
 const timeout: number = 30000
 
 export default abstract class Client {
-  get cors(): string {
-    return 'https://cors-anywhere.herokuapp.com/'
-  }
 
   get headers() {
     return {
@@ -14,8 +11,8 @@ export default abstract class Client {
     }
   }
 
-  request(method: Method, uri: string, params: any, cors: boolean) {
-    const url = cors ? `${this.cors}${uri}` : uri
+  request(method: Method, uri: string, params: any, cors: boolean, corsBaseUrl: string) {
+    const url = cors ? `${corsBaseUrl}` + encodeURIComponent(uri) : uri
     return axios({ method, headers: this.headers, timeout, url, params })
   }
 }

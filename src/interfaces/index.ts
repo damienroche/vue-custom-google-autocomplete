@@ -3,6 +3,7 @@ export interface Options {
   deepSearch: boolean
   params: any
   cors: boolean
+  corsBaseUrl?: string,
   debounceTime: number
   focus: boolean
 }
